@@ -261,15 +261,15 @@ class SwipeMenuLayout: ViewGroup {
                 mFirstP?.set(ev.rawX, ev.rawY)
 
                 if (mViewCache != null) {
-                    if (mViewCache !== this) {
+                    if (mViewCache != this) {
                         mViewCache?.handlerSwipeMenu(MenuState.CLOSE)
                     }
                     parent.requestDisallowInterceptTouchEvent(true)
                 }
             }
             MotionEvent.ACTION_MOVE -> {
-                val distanceX = mLastP?.x ?: 0 - ev.rawX
-                val distanceY = mLastP?.y ?: 0 - ev.rawY
+                val distanceX = (mLastP?.x ?: 0f) - ev.rawX
+                val distanceY = (mLastP?.y ?: 0f) - ev.rawY
                 if (Math.abs(distanceY) > mScaledTouchSlop && Math.abs(distanceY) > Math.abs(distanceX)) {
                     return super.dispatchTouchEvent(ev)
                 }
@@ -280,8 +280,8 @@ class SwipeMenuLayout: ViewGroup {
                     if (!mCanRightSwipe || mLeftView == null) {
                         scrollTo(0, 0)
                     } else {//left
-                        if (scrollX < mLeftView?.left ?: 0) {
-                            scrollTo(mLeftView?.left ?: 0, 0)
+                        if (scrollX < (mLeftView?.left ?: 0)) {
+                            scrollTo((mLeftView?.left ?: 0), 0)
                         }
                     }
                 } else if (scrollX > 0) {
@@ -300,7 +300,7 @@ class SwipeMenuLayout: ViewGroup {
                 mLastP?.set(ev.rawX, ev.rawY)
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                finallyDistanceX = mFirstP?.x ?: 0 - ev.rawX
+                finallyDistanceX = (mFirstP?.x ?: 0f) - ev.rawX
                 if (Math.abs(finallyDistanceX) > mScaledTouchSlop) {
                     isSwiping = true
                 }
@@ -340,7 +340,7 @@ class SwipeMenuLayout: ViewGroup {
     private fun handlerSwipeMenu(result: MenuState) {
         when (result) {
             MenuState.LEFT_OPEN -> {
-                mScroller?.startScroll(scrollX, 0, mLeftView?.left ?: 0 - scrollX, 0)
+                mScroller?.startScroll(scrollX, 0, (mLeftView?.left ?: 0) - scrollX, 0)
                 mViewCache = this
                 mStateCache = result
             }
@@ -415,7 +415,7 @@ class SwipeMenuLayout: ViewGroup {
     fun resetStatus() {
         if (mViewCache != null) {
             if (mStateCache != null && mStateCache != MenuState.CLOSE && mScroller != null) {
-                mScroller?.startScroll(mViewCache?.scrollX ?: 0, 0, -(mViewCache?.scrollX ?: 0), 0)
+                mScroller?.startScroll((mViewCache?.scrollX ?: 0), 0, -(mViewCache?.scrollX ?: 0), 0)
                 mViewCache?.invalidate()
                 mViewCache = null
                 mStateCache = null

@@ -52,7 +52,7 @@ class SwipeMenuLayout: ViewGroup {
     private var mScaledTouchSlop: Int = 0
     private var mScroller: Scroller? = null
 
-    private val distanceX: Float = 0f
+    private var distanceX: Float = 0f
     private var finallyDistanceX: Float = 0f
 
     ////////////////
@@ -224,7 +224,7 @@ class SwipeMenuLayout: ViewGroup {
             var cBottom = 0
             val measuredWidth = measuredWidth
             val measuredHeight = measuredHeight
-            mContentViewLp = (layoutParams as ViewGroup.MarginLayoutParams).apply {
+            (layoutParams as ViewGroup.MarginLayoutParams).apply {
                 cTop += topMargin
                 cLeft = 0 - measuredWidth + leftMargin + rightMargin
                 cRight = 0 - rightMargin
@@ -239,10 +239,11 @@ class SwipeMenuLayout: ViewGroup {
             var cBottom = 0
             val measuredWidth = measuredWidth
             val measuredHeight = measuredHeight
-            val getRight = getRight()
-            mContentViewLp = (layoutParams as ViewGroup.MarginLayoutParams).apply {
+            val contentViewRight = mContentView?.right ?: ViewGroup.LayoutParams.MATCH_PARENT
+            val contentViewRightMargin = mContentViewLp?.rightMargin ?: 0
+            (layoutParams as ViewGroup.MarginLayoutParams).apply {
                 cTop += topMargin
-                cLeft = getRight + rightMargin + leftMargin
+                cLeft = contentViewRight + contentViewRightMargin + leftMargin
                 cRight = cLeft + measuredWidth
                 cBottom = cTop + measuredHeight
             }

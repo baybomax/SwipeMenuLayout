@@ -1,5 +1,5 @@
 # SwipeMenuLayout
-A slide swipe menu which can use customized layout acts on recycleView / listView .etc item or anyother views.
+A slide swipe menu build with kotlin which can use customized layout acts on recycleView / listView .etc item or any other views.
 
 [![](https://www.jitpack.io/v/baybomax/SwipeMenuLayout.svg)](https://www.jitpack.io/#baybomax/SwipeMenuLayout)
 

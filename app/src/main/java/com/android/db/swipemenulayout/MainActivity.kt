@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity() {
         : BaseAdapter<String, BaseViewHolder>(layoutIdRes, dataSrc) {
 
         override fun convert(helper: BaseViewHolder, item: String?) {
-
             helper.getView<ViewGroup>(R.id.content)?.setOnClickListener {
                 Toast.makeText(this@MainActivity, "content", Toast.LENGTH_SHORT).show()
             }
@@ -49,8 +48,6 @@ class MainActivity : AppCompatActivity() {
 
                 helper.getView<SwipeMenuLayout>(R.id.sml)?.resetStatus()
             }
-
         }
     }
-
 }

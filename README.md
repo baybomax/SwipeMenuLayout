@@ -3,7 +3,7 @@ A slide swipe menu build with kotlin which can use customized layout acts on rec
 
 [![](https://www.jitpack.io/v/baybomax/SwipeMenuLayout.svg)](https://www.jitpack.io/#baybomax/SwipeMenuLayout)
 
-![Mar-20-2018 17-14-32-sml](https://github.com/baybomax/SwipeMenuLayout/raw/master/raw/Mar-20-2018 17-14-32-sml.gif)
+![](https://github.com/baybomax/SwipeMenuLayout/raw/sml_case.gif)
 
 # How to use
 

@@ -3,6 +3,8 @@ A slide swipe menu build with kotlin which can use customized layout acts on rec
 
 [![](https://www.jitpack.io/v/baybomax/SwipeMenuLayout.svg)](https://www.jitpack.io/#baybomax/SwipeMenuLayout)
 
+![Mar-20-2018 17-14-32-sml](https://github.com/baybomax/SwipeMenuLayout/raw/master/raw/Mar-20-2018 17-14-32-sml.gif)
+
 # How to use
 
 	//all projects
@@ -54,8 +56,8 @@ A slide swipe menu build with kotlin which can use customized layout acts on rec
         android:id="@+id/sml"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        app:leftView="@+id/left"
+	
+        app:leftView="@+id/left"
         app:contentView="@+id/content"
         app:rightView="@+id/right"
         >

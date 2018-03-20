@@ -41,106 +41,105 @@ A slide swipe menu build with kotlin which can use customized layout acts on rec
 
 	You can simple directly use this layout as customized root viewgroup, such as follow
 	
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:clickable="true"
-    tools:ignore="KeyboardInaccessibleWidget"
-    >
+	<?xml version="1.0" encoding="utf-8"?>
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    		xmlns:app="http://schemas.android.com/apk/res-auto"
+    		xmlns:tools="http://schemas.android.com/tools"
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:orientation="vertical"
+    		android:clickable="true"
+    		tools:ignore="KeyboardInaccessibleWidget"
+    		>
 
-    <com.android.db.swipemenulayout.SwipeMenuLayout
-        android:id="@+id/sml"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-	
-        app:leftView="@+id/left"
-        app:contentView="@+id/content"
-        app:rightView="@+id/right"
-        >
+    		<com.android.db.swipemenulayout.SwipeMenuLayout
+        		android:id="@+id/sml"
+        		android:layout_width="match_parent"
+        		android:layout_height="wrap_content"
+				
+				app:leftView="@+id/left"
+				app:contentView="@+id/content"
+				app:rightView="@+id/right"
+       			>
 
-        <LinearLayout
-            android:id="@+id/left"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:padding="20dp"
+        		<LinearLayout
+            		android:id="@+id/left"
+            		android:layout_width="100dp"
+            		android:layout_height="wrap_content"
+            		android:padding="20dp"
 
-            android:background="@android:color/holo_blue_dark"
-            android:orientation="horizontal"
-            tools:ignore="NewApi"
-            >
+            		android:background="@android:color/holo_blue_dark"
+            		android:orientation="horizontal"
+            		tools:ignore="NewApi"
+            		>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:text="share"
-                tools:ignore="HardcodedText"
-                />
+					<TextView
+                		android:layout_width="wrap_content"
+                		android:layout_height="wrap_content"
+                		android:clickable="true"
+                		android:text="share"
+                		tools:ignore="HardcodedText"
+                		/>
 
-        </LinearLayout>
+        		</LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="20dp"
+        		<LinearLayout
+            		android:id="@+id/content"
+            		android:layout_width="match_parent"
+            		android:layout_height="wrap_content"
+            		android:padding="20dp"
 
-            android:background="#cccccc"
-            android:orientation="vertical"
-            >
+            		android:background="#cccccc"
+            		android:orientation="vertical"
+            		>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="customized"
-                tools:ignore="HardcodedText"
-                />
+            		<TextView
+                		android:layout_width="wrap_content"
+                		android:layout_height="wrap_content"
+                		android:text="customized"
+                		tools:ignore="HardcodedText"
+                		/>
 
-        </LinearLayout>
+        		</LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        		<LinearLayout
+            		android:id="@+id/right"
+            		android:layout_width="wrap_content"
+            		android:layout_height="wrap_content"
 
-            android:background="@android:color/holo_red_light"
-            android:orientation="horizontal"
-            tools:ignore="NewApi"
-            >
+            		android:background="@android:color/holo_red_light"
+            		android:orientation="horizontal"
+            		tools:ignore="NewApi"
+            		>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="20dp"
+            		<TextView
+                		android:layout_width="wrap_content"
+                		android:layout_height="wrap_content"
+                		android:padding="20dp"
 
-                android:background="@android:color/holo_blue_bright"
-                android:clickable="true"
-                android:text="delete"
-                tools:ignore="HardcodedText,NewApi"
-                />
+                		android:background="@android:color/holo_blue_bright"
+                		android:clickable="true"
+                		android:text="delete"
+                		tools:ignore="HardcodedText,NewApi"
+                		/>
 
-            <TextView
-                android:id="@+id/collect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="20dp"
+            		<TextView
+                		android:id="@+id/collect"
+                		android:layout_width="wrap_content"
+                		android:layout_height="wrap_content"
+                		android:padding="20dp"
 
-                android:background="@android:color/holo_orange_dark"
-                android:clickable="true"
-                android:text="collect"
-                tools:ignore="HardcodedText,NewApi"
-                />
+                		android:background="@android:color/holo_orange_dark"
+                		android:clickable="true"
+                		android:text="collect"
+                		tools:ignore="HardcodedText,NewApi"
+                		/>
 
-        </LinearLayout>
-    </com.android.db.swipemenulayout.SwipeMenuLayout>
+        		</LinearLayout>
+    		</com.android.db.swipemenulayout.SwipeMenuLayout>
 
-</LinearLayout>
+		</LinearLayout>
 
-	# tip
 		1.define left/content/right view id.
 			app:leftView="@+id/left"
 			app:contentView="@+id/content"

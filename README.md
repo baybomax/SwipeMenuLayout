@@ -28,7 +28,7 @@ A slide swipe menu build with kotlin which can use customized layout acts on rec
 
 	dependencies {
     	...
-    	implementation 'com.github.baybomax:SwipeMenuLayout:1.2.0'
+    	implementation 'com.github.baybomax:SwipeMenuLayout:1.2.1'
 	}
 
 # Notice

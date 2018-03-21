@@ -18,7 +18,7 @@ import java.util.*
  * Created by DengBo on 14/03/2018.
  */
 
-class SwipeMenuLayout: ViewGroup {
+open class SwipeMenuLayout: ViewGroup {
 
     companion object {
         @SuppressLint("StaticFieldLeak")
@@ -36,24 +36,27 @@ class SwipeMenuLayout: ViewGroup {
     }
 
     private val mMatchParentChildren = ArrayList<View>(1)
-    private var mLeftViewResID: Int = 0
-    private var mRightViewResID: Int = 0
-    private var mContentViewResID: Int = 0
-    private var mLeftView: View? = null
-    private var mRightView: View? = null
-    private var mContentView: View? = null
     private var mContentViewLp: ViewGroup.MarginLayoutParams? = null
-    private var isSwiping: Boolean = false
-    private var mLastP: PointF? = null
-    private var mFirstP: PointF? = null
-    private var mFraction: Float = 0.5f
-    private var mCanLeftSwipe = true
-    private var mCanRightSwipe = true
-    private var mScaledTouchSlop: Int = 0
     private var mScroller: Scroller? = null
+    private var mContentView: View? = null
+    private var mRightView: View? = null
+    private var mLeftView: View? = null
 
-    private var distanceX: Float = 0f
-    private var finallyDistanceX: Float = 0f
+    private var mFirstP: PointF? = null
+    private var mLastP: PointF? = null
+
+    private var mContentViewResID = 0
+    private var mRightViewResID = 0
+    private var mLeftViewResID = 0
+
+    private var finallyDistanceX = 0f
+    private var mScaledTouchSlop = 0
+    private var mFraction = 0.5f
+    private var distanceX = 0f
+
+    private var mCanRightSwipe = true
+    private var mCanLeftSwipe = true
+    private var isSwiping = false
 
     ////////////////
     // constructor
@@ -67,15 +70,10 @@ class SwipeMenuLayout: ViewGroup {
      * Initial
      */
     private fun init(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
-        val config = ViewConfiguration.get(context)
-        mScaledTouchSlop = config.scaledTouchSlop
+        mScaledTouchSlop = ViewConfiguration.get(context).scaledTouchSlop
         mScroller = Scroller(context)
 
-        val typedArray = context.theme.obtainStyledAttributes(
-                attrs, R.styleable.SwipeMenuLayout,
-                defStyleAttr,
-                0
-        )
+        val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.SwipeMenuLayout, defStyleAttr, 0)
 
         try {
             (0 until typedArray.indexCount).forEach { i ->
@@ -111,25 +109,21 @@ class SwipeMenuLayout: ViewGroup {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         isClickable = true
         var count = childCount
-        val measureMatchParentChildren = View.MeasureSpec.getMode(widthMeasureSpec) != View.MeasureSpec.EXACTLY
-                || View.MeasureSpec.getMode(heightMeasureSpec) != View.MeasureSpec.EXACTLY
+        val measureMatchParentChildren = View.MeasureSpec.getMode(widthMeasureSpec) != View.MeasureSpec.EXACTLY || View.MeasureSpec.getMode(heightMeasureSpec) != View.MeasureSpec.EXACTLY
         mMatchParentChildren.clear()
-        var maxHeight = 0
         var maxWidth = 0
+        var maxHeight = 0
         var childState = 0
         for (i in 0 until count) {
             val child = getChildAt(i)
             if (child.visibility != View.GONE) {
                 measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, 0)
                 val lp = child.layoutParams as ViewGroup.MarginLayoutParams
-                maxWidth = Math.max(maxWidth,
-                        child.measuredWidth + lp.leftMargin + lp.rightMargin)
-                maxHeight = Math.max(maxHeight,
-                        child.measuredHeight + lp.topMargin + lp.bottomMargin)
+                maxWidth = Math.max(maxWidth, child.measuredWidth + lp.leftMargin + lp.rightMargin)
+                maxHeight = Math.max(maxHeight, child.measuredHeight + lp.topMargin + lp.bottomMargin)
                 childState = View.combineMeasuredStates(childState, child.measuredState)
                 if (measureMatchParentChildren) {
-                    if (lp.width == ViewGroup.LayoutParams.MATCH_PARENT
-                            || lp.height == ViewGroup.LayoutParams.MATCH_PARENT) {
+                    if (lp.width == ViewGroup.LayoutParams.MATCH_PARENT || lp.height == ViewGroup.LayoutParams.MATCH_PARENT) {
                         mMatchParentChildren.add(child)
                     }
                 }
@@ -138,9 +132,7 @@ class SwipeMenuLayout: ViewGroup {
         // Check against our minimum height and width
         maxHeight = Math.max(maxHeight, suggestedMinimumHeight)
         maxWidth = Math.max(maxWidth, suggestedMinimumWidth)
-        setMeasuredDimension(View.resolveSizeAndState(maxWidth, widthMeasureSpec, childState),
-                View.resolveSizeAndState(maxHeight, heightMeasureSpec,
-                        childState shl View.MEASURED_HEIGHT_STATE_SHIFT))
+        setMeasuredDimension(View.resolveSizeAndState(maxWidth, widthMeasureSpec, childState), View.resolveSizeAndState(maxHeight, heightMeasureSpec, childState shl View.MEASURED_HEIGHT_STATE_SHIFT))
 
         count = mMatchParentChildren.size
         if (count > 1) {
@@ -148,28 +140,18 @@ class SwipeMenuLayout: ViewGroup {
                 val child = mMatchParentChildren[i]
                 val lp = child.layoutParams as ViewGroup.MarginLayoutParams
 
-                val childWidthMeasureSpec: Int
-                childWidthMeasureSpec = if (lp.width == ViewGroup.LayoutParams.MATCH_PARENT) {
-                    val width = Math.max(0, measuredWidth
-                            - lp.leftMargin - lp.rightMargin)
-                    View.MeasureSpec.makeMeasureSpec(
-                            width, View.MeasureSpec.EXACTLY)
+                val childWidthMeasureSpec = if (lp.width == ViewGroup.LayoutParams.MATCH_PARENT) {
+                    val width = Math.max(0, measuredWidth - lp.leftMargin - lp.rightMargin)
+                    View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY)
                 } else {
-                    ViewGroup.getChildMeasureSpec(widthMeasureSpec,
-                            lp.leftMargin + lp.rightMargin,
-                            lp.width)
+                    ViewGroup.getChildMeasureSpec(widthMeasureSpec, lp.leftMargin + lp.rightMargin, lp.width)
                 }
 
-                val childHeightMeasureSpec: Int
-                childHeightMeasureSpec = if (lp.height == FrameLayout.LayoutParams.MATCH_PARENT) {
-                    val height = Math.max(0, measuredHeight
-                            - lp.topMargin - lp.bottomMargin)
-                    View.MeasureSpec.makeMeasureSpec(
-                            height, View.MeasureSpec.EXACTLY)
+                val childHeightMeasureSpec = if (lp.height == FrameLayout.LayoutParams.MATCH_PARENT) {
+                    val height = Math.max(0, measuredHeight - lp.topMargin - lp.bottomMargin)
+                    View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY)
                 } else {
-                    ViewGroup.getChildMeasureSpec(heightMeasureSpec,
-                            lp.topMargin + lp.bottomMargin,
-                            lp.height)
+                    ViewGroup.getChildMeasureSpec(heightMeasureSpec, lp.topMargin + lp.bottomMargin, lp.height)
                 }
 
                 child.measure(childWidthMeasureSpec, childHeightMeasureSpec)
@@ -183,10 +165,8 @@ class SwipeMenuLayout: ViewGroup {
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         val count = childCount
-        val left = 0 + paddingLeft
-        val right = 0 + paddingLeft
-        val top = 0 + paddingTop
-        val bottom = 0 + paddingTop
+        val left = paddingLeft
+        val top = paddingTop
 
         for (i in 0 until count) {
             val child = getChildAt(i)
@@ -255,14 +235,20 @@ class SwipeMenuLayout: ViewGroup {
         when (ev?.action) {
             MotionEvent.ACTION_DOWN -> {
                 isSwiping = false
-                if (mLastP == null) { mLastP = PointF() }
+
+                if (mLastP == null) {
+                    mLastP = PointF()
+                }
                 mLastP?.set(ev.rawX, ev.rawY)
-                if (mFirstP == null) { mFirstP = PointF() }
+
+                if (mFirstP == null) {
+                    mFirstP = PointF()
+                }
                 mFirstP?.set(ev.rawX, ev.rawY)
 
-                if (mViewCache != null) {
-                    if (mViewCache != this) {
-                        mViewCache?.handlerSwipeMenu(MenuState.CLOSE)
+                mViewCache?.apply {
+                    if (this != this@SwipeMenuLayout) {
+                        mViewCache?.handleSwipeMenu(MenuState.CLOSE)
                     }
                     parent.requestDisallowInterceptTouchEvent(true)
                 }
@@ -304,7 +290,7 @@ class SwipeMenuLayout: ViewGroup {
                 if (Math.abs(finallyDistanceX) > mScaledTouchSlop) {
                     isSwiping = true
                 }
-                handlerSwipeMenu(isShouldOpen(scrollX))
+                handleSwipeMenu(isShouldOpen())
             }
             else -> {
             }
@@ -335,9 +321,10 @@ class SwipeMenuLayout: ViewGroup {
     }
 
     /**
-     *
+     * Handle Swipe state and invalidate view with specified[MenuState]
+     * @param result The state of this
      */
-    private fun handlerSwipeMenu(result: MenuState) {
+    private fun handleSwipeMenu(result: MenuState) {
         when (result) {
             MenuState.LEFT_OPEN -> {
                 mScroller?.startScroll(scrollX, 0, (mLeftView?.left ?: 0) - scrollX, 0)
@@ -368,30 +355,30 @@ class SwipeMenuLayout: ViewGroup {
     }
 
     /**
-     *
+     * Return the state of menu
+     * @return state
      */
-    private fun isShouldOpen(scrollX: Int): MenuState {
+    private fun isShouldOpen(): MenuState {
         if (mScaledTouchSlop >= Math.abs(finallyDistanceX)) {
             return mStateCache ?: MenuState.CLOSE
         }
 
         if (finallyDistanceX < 0) {
-            if (getScrollX() < 0 && mLeftView != null) {
-                if (Math.abs((mLeftView?.width ?: 0) * mFraction) < Math.abs(getScrollX())) {
+            if (scrollX < 0 && mLeftView != null) {
+                if (Math.abs((mLeftView?.width ?: 0) * mFraction) < Math.abs(scrollX)) {
                     return MenuState.LEFT_OPEN
                 }
             }
-            if (getScrollX() > 0 && mRightView != null) {
+            if (scrollX > 0 && mRightView != null) {
                 return MenuState.CLOSE
             }
         } else if (finallyDistanceX > 0) {
-            if (getScrollX() > 0 && mRightView != null) {
-                if (Math.abs((mRightView?.width ?: 0) * mFraction) < Math.abs(getScrollX())) {
+            if (scrollX > 0 && mRightView != null) {
+                if (Math.abs((mRightView?.width ?: 0) * mFraction) < Math.abs(scrollX)) {
                     return MenuState.RIGHT_OPEN
                 }
-
             }
-            if (getScrollX() < 0 && mLeftView != null) {
+            if (scrollX < 0 && mLeftView != null) {
                 return MenuState.CLOSE
             }
         }
@@ -400,13 +387,13 @@ class SwipeMenuLayout: ViewGroup {
     }
 
     override fun onDetachedFromWindow() {
-        mViewCache?.handlerSwipeMenu(MenuState.CLOSE)
+        mViewCache?.handleSwipeMenu(MenuState.CLOSE)
         super.onDetachedFromWindow()
     }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        mViewCache?.handlerSwipeMenu(mStateCache ?: MenuState.CLOSE)
+        mViewCache?.handleSwipeMenu(mStateCache ?: MenuState.CLOSE)
     }
 
     /**

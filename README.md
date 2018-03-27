@@ -141,7 +141,7 @@ A slide swipe menu build with kotlin which can use customized layout acts on rec
 
 		</LinearLayout>
 		
-		非常简单，用法：
+		#非常简单，用法：
 		1.define left/content/right view id.
 			app:leftView="@+id/left"
 			app:contentView="@+id/content"

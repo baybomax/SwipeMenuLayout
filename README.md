@@ -34,7 +34,8 @@ A slide swipe menu build with kotlin which can use customized layout acts on rec
 # Notice
 
 	If you want use this layout acts on multiple list item, recommended that conjunction with another 
-	repository named MultiRecycleViewAdapter
+	repository named MultiRecycleViewAdapter(译：如果你想在ListView、RecyclerView等item上使用，推荐联合我的
+	另一个库MultiRecycleViewAdapter一起使用https://github.com/baybomax/MultiRecycleViewAdapter)
 [![](https://www.jitpack.io/v/baybomax/MultiRecycleViewAdapter.svg)](https://www.jitpack.io/#baybomax/MultiRecycleViewAdapter)
 
 # Example
@@ -139,7 +140,8 @@ A slide swipe menu build with kotlin which can use customized layout acts on rec
     		</com.android.db.swipemenulayout.SwipeMenuLayout>
 
 		</LinearLayout>
-
+		
+		非常简单，用法：
 		1.define left/content/right view id.
 			app:leftView="@+id/left"
 			app:contentView="@+id/content"

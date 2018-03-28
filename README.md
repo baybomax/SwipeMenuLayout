@@ -7,7 +7,7 @@ A slide swipe menu build with kotlin which can use customized layout acts on rec
 
 # How to use
 
-	//all projects
+	//project
 	allprojects {
 		repositories {
 			...
